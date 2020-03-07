@@ -82,7 +82,7 @@ public class UrlServiceImpl implements IUrlService {
             });
             return new PairReturnType(original.getRedirectType(), original.getOriginalUrl(), true);
         } catch (EntityNotFoundException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             return new PairReturnType(false);
         }
     }
