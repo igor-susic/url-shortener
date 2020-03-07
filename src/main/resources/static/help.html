@@ -18,7 +18,111 @@
 
             <div id="collapseOne" class="collapse show" aria-labelledby="setup" data-parent="#accordionExample">
                 <div class="card-body">
-                    <p>To package project as <pre>.jar</pre> use <pre>mvn clean install</pre>, to run it use <pre>java -jar path-to/url-shortener-0.0.1-SNAPSHOT.jar</pre></p>
+                    <h1>
+                        <a id="user-content-url-shortener" class="anchor" href="#url-shortener"
+                           aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>url-shortener</h1>
+                    <p>Simple URL shorten-er REST service, think of it like Hello World of bitly.com API done in Java Spring-Boot project :)
+                    </p>
+                    <h2>
+                        <a id="user-content-setup-and-run-the-project" class="anchor" href="#setup-and-run-the-project"
+                           aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup and run the project
+                    </h2>
+                    <h3>
+                        <a id="user-content-prerequisites" class="anchor" href="#prerequisites"
+                           aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Prerequisites</h3>
+                    <p><strong>These instructions are for <code>linux</code> only:</strong></p>
+                    <ol>
+                        <li>Check your <code>JAVA</code> version you can do that by running <code>java --version</code>. You should have
+                            <code>JAVA 11</code>, project was build using <code>openjdk 11.0.6 2020-01-14</code>
+                        </li>
+                        <li>Check your <code>MAVEN</code> instalation, you can do that by running <code>mvn -v</code>, project ueses Maven
+                            version <code>3.6.3</code>
+                        </li>
+                    </ol>
+                    <h3>
+                        <a id="user-content-setup-instructions" class="anchor" href="#setup-instructions"
+                           aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup instructions</h3>
+                    <ol>
+                        <li>Clone the project <code>git clone https://github.com/igor-susic/url-shortener.git</code>
+                        </li>
+                        <li>
+                            <code>cd</code> into <code>/url-shortener</code> directory</li>
+                        <li>Run <code>mvn clean install</code> Look for the output of this command, you should see directory where
+                            <code>maven</code> did build your <code>.jar</code> file
+                            it will look something like this
+                            <code>/home/$USER/.m2/repository/com/demo/url-shortener/0.0.1-SNAPSHOT/url-shortener-0.0.1-SNAPSHOT.jar</code>
+                        </li>
+                        <li>
+                            <code>cd</code> into <code>0.0.1-SNAPSHOT</code> directory and run
+                            <code>java -jar url-shortener-0.0.1-SNAPSHOT.jar</code> or run <code>java -jar /absolute/path/to/.jar</code>
+                        </li>
+                    </ol>
+                    <h3>
+                        <a id="user-content-restrictions-and-application-arhitecture" class="anchor"
+                           href="#restrictions-and-application-arhitecture"
+                           aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Restrictions and application
+                        arhitecture</h3>
+                    <p>This project is not for production use, it is only for demonstration purposes.</p>
+                    <p>** What is important **</p>
+                    <ul>
+                        <li>Catching the <code>shortenUrl</code> is done here with use of <code>javax.servlet.Filer</code>, better solution
+                            would be to move evry API endpoint under <code>/v1/rest-of-the-path</code> and create
+                            <code>@RestController</code> that would catch <code>regex</code> expression for anything under <code>/</code> of
+                            depth <code>1</code>
+                        </li>
+                        <li>This implementation uses <code>H2</code> in-memory database. For this purposes it is enough, but you would want
+                            to use <code>NoSQL</code> database to save all those mappings of <code>longUrl: shortUrl</code>
+                        </li>
+                        <li>Currently generation of short <code>URL</code> is based on unique <code>int</code> in database, this could be
+                            removed from DB to save some space</li>
+                        <li>This implementation is creating short <code>URL</code>s using base62 technique <a
+                                href="https://en.wikipedia.org/wiki/URL_shortening" rel="nofollow">Url shortening Wiki</a>
+                        </li>
+                        <li>Charachters <code>_</code> and <code>/</code> are removed to gain more friendly <code>URL</code>s</li>
+                    </ul>
+
+                    <h3>
+                        <a id="user-content-possible-responses" class="anchor" href="#possible-responses"
+                           aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>POSSIBLE RESPONSES:</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>HTTP STATUS</th>
+                            <th>Meaning</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>200 - OK</td>
+                            <td>Everything worked as expected.</td>
+                        </tr>
+                        <tr>
+                            <td>201 - Created</td>
+                            <td>The request has succeeded and has led to the creation of a resource.</td>
+                        </tr>
+                        <tr>
+                            <td>400 - Bad Request</td>
+                            <td>The request was unacceptable, often due to missing a required parameter.</td>
+                        </tr>
+                        <tr>
+                            <td>401 - Unauthorized</td>
+                            <td>No valid Basic auth was provided.</td>
+                        </tr>
+                        <tr>
+                            <td>404 - Not Found</td>
+                            <td>The requested resource doesn't exist.</td>
+                        </tr>
+                        <tr>
+                            <td>422 - Unprocessable Entity</td>
+                            <td>server understands the content type of the request entity, and the syntax of the request entity is
+                                correct, but it was unable to process the contained instructions.</td>
+                        </tr>
+                        <tr>
+                            <td>500 ... - Server Errors</td>
+                            <td>Something went wrong with application. These are rare but you never know.</td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -32,27 +136,25 @@
             </div>
             <div id="collapseTwo" class="collapse" aria-labelledby="account" data-parent="#accordionExample">
                 <div class="card-body">
-                    <p>Endpoint for account creation.</p>
                     <p>Parameters:</p>
-                    <ul>
-                        <li>
-                            <pre>accountId</pre> type: <pre>string</pre> limitations: <pre>length <= 255</pre>
-                        </li>
-                    </ul>
+                    <div class="highlight highlight-source-java">
+	                    <pre><span class="pl-k">@Size</span>(<span class="pl-c1">max</span> <span class="pl-k">=</span> <span class="pl-c1">255</span>)<span class="pl-smi">String</span> accountId</pre>
+                    </div>
 
-                    <p><b>Sample request:</b></p>
-                    <pre>
-                        curl --header "Content-Type: application/json" --request POST --data '{"accountId":"xyz"}' http://localhost:8080/account
-                    </pre>
-
+                    <p>Request example:</p>
+                    <div class="highlight highlight-source-shell">
+                        <pre>curl --header <span class="pl-s"><span class="pl-pds">"</span>Content-Type: application/json<span class="pl-pds">"</span></span> --request POST --data <span class="pl-s"><span class="pl-pds">'</span>{"accountId":"xyz"}<span class="pl-pds">'</span></span> http://localhost:8080/account</pre>
+                    </div>
                     <p>Response:</p>
-                    <pre>
-                        {
-                                "success": true,
-                                "description": "Your account is successfully opened",
-                                "password": "GNCaaavL"
+                    <div class="highlight highlight-source-js">
+	                    <pre>
+                            {
+                                <span class="pl-s"><span class="pl-pds">"</span>success<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">true</span>,
+                                <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>Your account is successfully opened<span class="pl-pds">"</span></span>,
+                                <span class="pl-s"><span class="pl-pds">"</span>password<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>GNCaaavL<span class="pl-pds">"</span></span> <span class="pl-c"><span class="pl-c">//</span> pasword is encoded so if you don't write it down you will have to create new account</span>
                             }
-                    </pre>
+                        </pre>
+                    </div>
                 </div>
             </div>
         </div>
@@ -66,29 +168,28 @@
             </div>
             <div id="collapseThree" class="collapse" aria-labelledby="register" data-parent="#accordionExample">
                 <div class="card-body">
-                    <p>Endpoint for subbmiting the URL</p>
                     <p>Parameters:</p>
-                    <ul>
-                        <li>
-                            <pre>url</pre> type: <pre>string</pre>
-                        </li>
-                        <li>
-                            <pre>redirectType</pre> type: <pre>int</pre> possible values <pre>301 | 302</pre>
-                            <p><i><pre>redirectType</pre> is set to 302 by default, and it is opinional parameter.</i></p>
-                        </li>
-                    </ul>
-
-                    <p><b>Sample request:</b></p>
-                    <pre>
-                        curl --header "Content-Type: application/json" --request POST --user name:password --data '{"url":"https://google.com"}' http://localhost:8080/register
-                    </pre>
-
+                    <div class="highlight highlight-source-java">
+	                    <pre>
+                            <span class="pl-smi">String</span> url
+                            <span class="pl-k">int</span> redirectType <span class="pl-c"><span class="pl-c">//</span> optional parameter, possible values 301 | 302, and 302 is default value</span>
+                        </pre>
+                    </div>
+                    <p>Request example:</p>
+                    <div class="highlight highlight-source-shell">
+                        <pre>curl --header <span class="pl-s"><span class="pl-pds">"</span>Content-Type: application/json<span class="pl-pds">"</span></span> --request POST --user name:password --data <span class="pl-s"><span class="pl-pds">'</span>{"url":"https://google.com"}<span class="pl-pds">'</span></span> http://localhost:8080/register</pre>
+                    </div>
+                    <div class="highlight highlight-source-shell">
+                        <pre>curl --header <span class="pl-s"><span class="pl-pds">"</span>Content-Type: application/json<span class="pl-pds">"</span></span> --request POST --user name:password --data <span class="pl-s"><span class="pl-pds">'</span>{"url":"https://google.com", "redirectType":301}<span class="pl-pds">'</span></span> http://localhost:8080/register</pre>
+                    </div>
                     <p>Response:</p>
-                    <pre>
-                            {
-                                "shortUrl": "http://localhost:8080/d"
-                            }
+                    <div class="highlight highlight-source-js">
+	                <pre>
+                        {
+                            <span class="pl-s"><span class="pl-pds">"</span>shortUrl<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>http://localhost:8080/d<span class="pl-pds">"</span></span>
+                        }
                     </pre>
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,20 +203,42 @@
             </div>
             <div id="collapseFour" class="collapse" aria-labelledby="stats" data-parent="#accordionExample">
                 <div class="card-body">
-                    <p>Get statistics for account</p>
-                    <p><b>Sample request:</b></p>
-                    <pre>
-                        curl --header "Content-Type: application/json" --request POST --user name:password http://localhost:8080/statistic/name
-                    </pre>
-
+                    <p>Parameters:</p>
+                    <div class="highlight highlight-source-java">
+                        <pre><span class="pl-c"><span class="pl-c">//</span> No parameters in data, access endpoint only using GET and URL with basic autorization</span></pre>
+                    </div>
+                    <p>Request example:</p>
+                    <div class="highlight highlight-source-shell">
+                        <pre>curl --request GET --user name:password http://localhost:8080/statistic/name</pre>
+                    </div>
                     <p>Response:</p>
-                    <pre>
+                    <div class="highlight highlight-source-js">
+	                <pre>
                         {
-                            "https://www.kaggle.com/": 1,
-                            "https://www.pmfst.unist.hr/": 0,
-                            "https://news.ycombinator.com/": 2
+                            <span class="pl-s"><span class="pl-pds">"</span>https://www.kaggle.com/<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">1</span>,
+                            <span class="pl-s"><span class="pl-pds">"</span>https://www.pmfst.unist.hr/<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">0</span>,
+                            <span class="pl-s"><span class="pl-pds">"</span>https://news.ycombinator.com/<span class="pl-pds">"</span></span><span class="pl-k">:</span> <span class="pl-c1">2</span>
                         }
                     </pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-header" id="short">
+                <h2 class="mb-0">
+                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                        [GET] /statistic/{AccountId}
+                    </button>
+                </h2>
+            </div>
+            <div id="collapseFive" class="collapse" aria-labelledby="short" data-parent="#accordionExample">
+                <div class="card-body">
+                    <p>For example:</p>
+                    <div class="highlight highlight-source-shell">
+                        <pre>curl -L http://localhost:8080/c</pre>
+                    </div>
+                    <p><code>-L</code> argument is important as <code>cURL</code> won't follow redirect otherwise</p>
                 </div>
             </div>
         </div>
