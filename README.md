@@ -30,6 +30,7 @@ This project is not for production use, it is only for demonstration purposes.
 * This implementation is creating short `URL`s using base62 technique [Url shortening Wiki](https://en.wikipedia.org/wiki/URL_shortening)
 * Charachters `_` and `/` are removed to gain more friendly `URL`s
 
+** This is my first project using Java and Spring Boot, so I'm positive that some things are not best practice from Spring/Java standpoint **
 
 ### What is left to do:
 
@@ -119,3 +120,13 @@ Response:
   "https://news.ycombinator.com/": 2
 }
 ```
+
+#### *Testing short URL*
+
+For example:
+
+```bash
+curl -L http://localhost:8080/c
+```
+
+`-L` argument is important as `cURL` won't follow redirect otherwise

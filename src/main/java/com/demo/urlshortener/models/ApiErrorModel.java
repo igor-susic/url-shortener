@@ -13,13 +13,11 @@ public class ApiErrorModel {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private LocalDateTime timestamp;
     private String message;
-    private String debugMessage;
 
     public ApiErrorModel(HttpStatus status, String message, Throwable exception) {
         this.timestamp = LocalDateTime.now();
         this.status = status;
         this.message = message;
-        this.debugMessage = exception.getLocalizedMessage();
     }
 
     public HttpStatus getStatus() {
@@ -32,9 +30,5 @@ public class ApiErrorModel {
 
     public LocalDateTime getTimestamp() {
         return timestamp;
-    }
-
-    public String getDebugMessage() {
-        return debugMessage;
     }
 }

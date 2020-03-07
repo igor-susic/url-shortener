@@ -9,9 +9,9 @@ import java.util.Random;
 public class PasswordGeneratorService {
 
     /**
-     * Returns plain text password using the rules from PasswordModel.
+     * Returns plain text password using the rules from @see PasswordModel
      *
-     * @return Plain text password
+     * @return Plain text password, length of 8 characters
      */
     public String generate() {
 

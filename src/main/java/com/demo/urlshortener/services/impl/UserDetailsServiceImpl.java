@@ -1,7 +1,7 @@
 package com.demo.urlshortener.services.impl;
 
 import com.demo.urlshortener.entities.Account;
-import com.demo.urlshortener.repositorys.AccountRepository;
+import com.demo.urlshortener.repositories.AccountRepository;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;

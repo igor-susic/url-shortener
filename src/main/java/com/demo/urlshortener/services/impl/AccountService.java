@@ -4,9 +4,7 @@ import com.demo.urlshortener.entities.Account;
 import com.demo.urlshortener.entities.Role;
 import com.demo.urlshortener.models.domain.AccountDetails;
 import com.demo.urlshortener.models.domain.AccountDetailsFactory;
-import com.demo.urlshortener.repositorys.AccountRepository;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
+import com.demo.urlshortener.repositories.AccountRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +27,8 @@ public class AccountService {
         try {
             Account account = repository.findById(id).orElseThrow();
             return AccountDetailsFactory.create(id, urlService.getUrlStatisticsForAccount(account));
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException ex) {
+            ex.printStackTrace();
             return null;
         }
     }
@@ -43,9 +42,8 @@ public class AccountService {
 
         try {
             repository.save(account);
-        } catch (Exception e) {
-            Logger logger = LoggerFactory.getLogger("com.demo.urlshortener.services.saveAccount");
-            logger.error("Error while saving new Account to database.", e);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 

@@ -1,4 +1,4 @@
-package com.demo.urlshortener.repositorys;
+package com.demo.urlshortener.repositories;
 
 import com.demo.urlshortener.entities.Account;
 import com.demo.urlshortener.entities.URL;

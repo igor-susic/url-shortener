@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +30,8 @@ public class RegisterController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Object> register(@Valid @RequestBody RegisterUrlRequest request) {
 
-        String shortenedUrl = URLshortenerService.shorten(request.getUrl(), request.getRedirectType());
+        String currentUserId = SecurityContextHolder.getContext().getAuthentication().getName();
+        String shortenedUrl = URLshortenerService.shorten(request.getUrl(), request.getRedirectType(), currentUserId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterUrlResponse(urlBuilderService.buildShortUrl(shortenedUrl)));
     }

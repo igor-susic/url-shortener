@@ -18,15 +18,15 @@ public class UrlBuilderService {
     /**
      * @param encoded For example uri like: abc
      *
-     * @return String, either empty or for example: http://www.google.com/abc
+     * @return String, either empty if there was bad input or for example: http://www.google.com/abc
      */
     public String buildShortUrl(String encoded) {
         try {
             URL baseUrl = new URL(domain + ":" + port);
             URL shortUrl = new URL(baseUrl, encoded);
             return shortUrl.toString();
-        } catch (MalformedURLException e) {
-            //todo
+        } catch (MalformedURLException ex) {
+            ex.printStackTrace();
             return "";
         }
     }

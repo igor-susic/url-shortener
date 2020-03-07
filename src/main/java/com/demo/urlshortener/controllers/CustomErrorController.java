@@ -36,6 +36,7 @@ public class CustomErrorController implements ErrorController {
                 return HttpStatus.valueOf(statusCode);
             }
             catch (Exception ex) {
+                ex.printStackTrace();
             }
         }
         return HttpStatus.INTERNAL_SERVER_ERROR;

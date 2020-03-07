@@ -48,13 +48,4 @@ public class Account implements Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
-
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accountId='" + accountId + '\'' +
-                ", password='" + password + '\'' +
-                ", role=" + role.getRole() +
-                '}';
-    }
 }

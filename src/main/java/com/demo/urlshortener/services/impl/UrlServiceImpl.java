@@ -4,8 +4,8 @@ import com.demo.urlshortener.entities.Account;
 import com.demo.urlshortener.entities.URL;
 import com.demo.urlshortener.models.PairReturnType;
 import com.demo.urlshortener.models.domain.ShortUrl;
-import com.demo.urlshortener.repositorys.AccountRepository;
-import com.demo.urlshortener.repositorys.URLRepository;
+import com.demo.urlshortener.repositories.AccountRepository;
+import com.demo.urlshortener.repositories.URLRepository;
 import com.demo.urlshortener.services.IUrlService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -36,8 +36,8 @@ public class UrlServiceImpl implements IUrlService {
 
         try {
             urlRepository.save(url);
-        } catch (Exception e) {
-            //todo
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 
@@ -52,19 +52,18 @@ public class UrlServiceImpl implements IUrlService {
         return urlStats;
     }
 
-    public String shorten(String longUrl, int redirectType) {
+    public String shorten(String longUrl, int redirectType, String currentUserId) {
         URL newUrl = new URL();
         newUrl.setOriginalUrl(longUrl);
         newUrl.setRedirectType(redirectType);
 
-        Account acc = accountRepository.findById(SecurityContextHolder.getContext().getAuthentication().getName()).orElseThrow(() -> {
+        Account acc = accountRepository.findById(currentUserId).orElseThrow(() -> {
             throw new EntityNotFoundException();
         });
 
         newUrl.setAccountId(acc);
 
         URL url = urlRepository.save(newUrl);
-
         String encodedShortUrl = this.encode(url.getId());
 
         url.setEncodedUrl(encodedShortUrl);
@@ -74,15 +73,16 @@ public class UrlServiceImpl implements IUrlService {
         return url.getEncodedUrl();
     }
 
-    public PairReturnType getDestinationAndRedirectType(String path) {
-        int idMappedValue = this.decode(path);
+    public PairReturnType getDestinationAndRedirectType(String uri) {
+        int idMappedValue = this.decode(uri);
 
         try {
             URL original = urlRepository.findById(idMappedValue).orElseThrow(() -> {
                 throw new EntityNotFoundException();
             });
             return new PairReturnType(original.getRedirectType(), original.getOriginalUrl(), true);
-        } catch (EntityNotFoundException e) {
+        } catch (EntityNotFoundException ex) {
+            ex.printStackTrace();
             return new PairReturnType(false);
         }
     }
